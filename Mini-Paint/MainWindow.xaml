@@ -5,8 +5,59 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Mini_Paint"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Mini Paint"
+        Height="450" Width="800"
+        MinHeight="250" MinWidth="950"
+        WindowState="Maximized"
+        FontSize="16">
+    <Window.Resources>
+        <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style x:Key="ButtonTextBlockStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
     <Grid>
-        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="90"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Background="LightGray">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Button Style="{StaticResource ButtonStyle}">
+                        <TextBlock Text="Rectangle" Style="{StaticResource ButtonTextBlockStyle}"/>
+                    </Button>
+                    <Button Style="{StaticResource ButtonStyle}">
+                        <TextBlock Text="Ellipse" Style="{StaticResource ButtonTextBlockStyle}"/>
+                    </Button>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource ButtonStyle}">
+                        <TextBlock Text="Delete" Style="{StaticResource ButtonTextBlockStyle}"/>
+                    </Button>
+                    <Button Style="{StaticResource ButtonStyle}">
+                        <TextBlock Text="Random Colors" Style="{StaticResource ButtonTextBlockStyle}"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <Canvas Grid.Row="1" x:Name="MyCanvas">
+                <Canvas.Background>
+                    <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="DarkSlateGray" Offset="0.5"/>
+                        <GradientStop Color="Black" Offset="1"/>
+                    </LinearGradientBrush>
+                </Canvas.Background>
+            </Canvas>
+        </Grid>
     </Grid>
 </Window>
