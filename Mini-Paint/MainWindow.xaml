@@ -42,10 +42,10 @@
                     </Button>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Style="{StaticResource ButtonStyle}">
+                    <Button Style="{StaticResource ButtonStyle}" Click="DeleteButtonClick">
                         <TextBlock Text="Delete" Style="{StaticResource ButtonTextBlockStyle}"/>
                     </Button>
-                    <Button Style="{StaticResource ButtonStyle}">
+                    <Button Style="{StaticResource ButtonStyle}" Click="RandomColorsButtonClick">
                         <TextBlock Text="Random Colors" Style="{StaticResource ButtonTextBlockStyle}"/>
                     </Button>
                 </StackPanel>

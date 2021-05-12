@@ -112,10 +112,12 @@ namespace Mini_Paint
                         ShadowDepth = 0,
                         BlurRadius = 50
                     };
+                    Canvas.SetZIndex((Ellipse)sender, 1);
                 }
                 else
                 {
                     ((Ellipse)sender).Effect = null;
+                    Canvas.SetZIndex((Ellipse)sender, 0);
                 }
             }
             if (sender is Rectangle)
@@ -129,10 +131,76 @@ namespace Mini_Paint
                         ShadowDepth = 0,
                         BlurRadius = 50
                     };
+                    Canvas.SetZIndex((Rectangle)sender, 1);
                 }
                 else
                 {
                     ((Rectangle)sender).Effect = null;
+                    Canvas.SetZIndex((Rectangle)sender, 0);
+                }
+            }
+        }
+
+        private void DeleteButtonClick(object sender, RoutedEventArgs e)
+        {
+            List<UIElement> DeleteList = new List<UIElement>();
+            foreach (var o in MyCanvas.Children)
+            {
+                if (o is Ellipse)
+                {
+                    if (((Ellipse)o).Effect != null)
+                    {
+                        DeleteList.Add((Ellipse)o);
+                    }
+                }
+                if (o is Rectangle)
+                {
+                    if (((Rectangle)o).Effect != null)
+                    {
+                        DeleteList.Add((Rectangle)o);
+                    }
+                }
+            }
+            foreach (var o in DeleteList)
+            {
+                if (o is Ellipse)
+                {
+                    MyCanvas.Children.Remove((Ellipse)o);
+                }
+                if (o is Rectangle)
+                {
+                    MyCanvas.Children.Remove((Rectangle)o);
+                }
+            }
+        }
+
+        private void RandomColorsButtonClick(object sender, RoutedEventArgs e)
+        {
+            SolidColorBrush solidColorBrush = new SolidColorBrush();
+            Random random = new Random();
+            foreach (var o in MyCanvas.Children)
+            {
+                if (o is Ellipse)
+                {
+                    if (((Ellipse)o).Effect != null)
+                    {
+                        var red = (byte)random.Next(0, 255);
+                        var green = (byte)random.Next(0, 255);
+                        var blue = (byte)random.Next(0, 255);
+                        solidColorBrush.Color = Color.FromArgb(255, red, green, blue);
+                        ((Ellipse)o).Fill = solidColorBrush;
+                    }
+                }
+                if (o is Rectangle)
+                {
+                    if (((Rectangle)o).Effect != null)
+                    {
+                        var red = (byte)random.Next(0, 255);
+                        var green = (byte)random.Next(0, 255);
+                        var blue = (byte)random.Next(0, 255);
+                        solidColorBrush.Color = Color.FromArgb(255, red, green, blue);
+                        ((Rectangle)o).Fill = solidColorBrush;
+                    }
                 }
             }
         }
