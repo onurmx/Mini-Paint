@@ -9,7 +9,8 @@
         Height="450" Width="800"
         MinHeight="250" MinWidth="950"
         WindowState="Maximized"
-        FontSize="16">
+        FontSize="16"
+        Loaded="Window_Loaded">
     <Window.Resources>
         <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Height" Value="50"/>
