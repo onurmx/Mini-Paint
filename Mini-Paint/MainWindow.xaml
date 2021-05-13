@@ -100,7 +100,7 @@
                         <TextBlock Text="Random Colors" Style="{StaticResource ButtonTextBlockStyle}"/>
                     </Button>
                     <Rectangle Style="{StaticResource SeperatorRectangleStyle}"/>
-                    <Button Style="{StaticResource ButtonStyle}">
+                    <Button Style="{StaticResource ButtonStyle}" Click="ExportButtonClick">
                         <TextBlock Text="Export to .png" Style="{StaticResource ButtonTextBlockStyle}"/>
                     </Button>
                     <Button Style="{StaticResource ButtonStyle}">

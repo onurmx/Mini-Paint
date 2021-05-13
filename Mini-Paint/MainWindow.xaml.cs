@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Media.Effects;
+using Microsoft.Win32;
+using System.IO;
 
 namespace Mini_Paint
 {
@@ -309,6 +311,36 @@ namespace Mini_Paint
                 ManualDraw.Ellipse.Cursor = Cursors.Hand;
                 ManualDraw = new ManualDraw();
                 MyCanvas.Cursor = Cursors.Arrow;
+            }
+        }
+
+        private void ExportButtonClick(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.FileName = "savedimage"; // Default file name
+            saveFileDialog.Filter = "PNG File|*.png";
+
+            // Show save file dialog box
+            Nullable<bool> result = saveFileDialog.ShowDialog();
+
+            // Process save file dialog box results
+            if (result == true)
+            {
+                // Save document
+                string filename = saveFileDialog.FileName;
+                //render ink to bitmap
+                RenderTargetBitmap rtb = new RenderTargetBitmap((int)MyCanvas.ActualWidth,
+                                                                (int)MyCanvas.ActualHeight,
+                                                                96d,
+                                                                96d, PixelFormats.Default);
+                rtb.Render(MyCanvas);
+
+                using (FileStream fs = new FileStream(filename, FileMode.Create))
+                {
+                    BmpBitmapEncoder encoder = new BmpBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(rtb));
+                    encoder.Save(fs);
+                }
             }
         }
     }
