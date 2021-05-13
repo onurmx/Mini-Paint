@@ -63,7 +63,7 @@ namespace Mini_Paint
             }
         }
 
-        private void DrawEllipse(double left, double top, int width, int height, byte red, byte green, byte blue)
+        private Ellipse DrawEllipse(double left, double top, int width, int height, byte red, byte green, byte blue)
         {
             Ellipse ellipse = new Ellipse();
             SolidColorBrush solidColorBrush = new SolidColorBrush();
@@ -78,6 +78,8 @@ namespace Mini_Paint
             MyCanvas.Children.Add(ellipse);
             Canvas.SetLeft(ellipse, left);
             Canvas.SetTop(ellipse, top);
+
+            return ellipse;
         }
 
         private Rectangle DrawRectangle(double left, double top, int width, int height, byte red, byte green, byte blue)
@@ -209,25 +211,54 @@ namespace Mini_Paint
 
         private void ShapeButtonClick(object sender, RoutedEventArgs e)
         {
-            if (sender == RectangleButton)
+            if (ManualDraw.DrawingMode == 3)
             {
-
-            }
-            if (sender == EllipseButton)
-            {
-
+                if (sender == RectangleButton)
+                {
+                    ManualDraw.DrawingMode = 1;
+                    MyCanvas.Cursor = Cursors.Cross;
+                }
+                if (sender == EllipseButton)
+                {
+                    ManualDraw.DrawingMode = 2;
+                    MyCanvas.Cursor = Cursors.Cross;
+                }
             }
         }
 
         private void MyCanvasLeftDown(object sender, MouseButtonEventArgs e)
         {
-            ManualDraw.StartPoint = e.GetPosition(MyCanvas);
-            ManualDraw.Rectangle = DrawRectangle(e.GetPosition(MyCanvas).X, e.GetPosition(MyCanvas).Y, 0, 0, 255, 255, 255);
+            if (ManualDraw.DrawingMode == 1)
+            {
+                Random random = new Random();
+                ManualDraw.StartPoint = e.GetPosition(MyCanvas);
+                ManualDraw.Rectangle = DrawRectangle(e.GetPosition(MyCanvas).X,
+                                                     e.GetPosition(MyCanvas).Y,
+                                                     0,
+                                                     0,
+                                                     (byte)random.Next(0, 255),
+                                                     (byte)random.Next(0, 255),
+                                                     (byte)random.Next(0, 255));
+                ManualDraw.Rectangle.Cursor = null;
+            }
+            if (ManualDraw.DrawingMode == 2)
+            {
+                Random random = new Random();
+                ManualDraw.StartPoint = e.GetPosition(MyCanvas);
+                ManualDraw.Ellipse = DrawEllipse(e.GetPosition(MyCanvas).X,
+                                                 e.GetPosition(MyCanvas).Y,
+                                                 0,
+                                                 0,
+                                                 (byte)random.Next(0, 255),
+                                                 (byte)random.Next(0, 255),
+                                                 (byte)random.Next(0, 255));
+                ManualDraw.Ellipse.Cursor = null;
+            }
         }
 
         private void MyCanvasMouseMove(object sender, MouseEventArgs e)
         {
-            if (ManualDraw.Rectangle != new Rectangle())
+            if (ManualDraw.DrawingMode == 1)
             {
                 if (e.GetPosition(MyCanvas).X - ManualDraw.StartPoint.X < 0)
                 {
@@ -248,12 +279,41 @@ namespace Mini_Paint
                     ManualDraw.Rectangle.Height = e.GetPosition(MyCanvas).Y - ManualDraw.StartPoint.Y;
                 }
             }
+            if (ManualDraw.DrawingMode == 2)
+            {
+                if (e.GetPosition(MyCanvas).X - ManualDraw.StartPoint.X < 0)
+                {
+                    Canvas.SetLeft(ManualDraw.Ellipse, e.GetPosition(MyCanvas).X);
+                    ManualDraw.Ellipse.Width = -(e.GetPosition(MyCanvas).X - ManualDraw.StartPoint.X);
+                }
+                else
+                {
+                    ManualDraw.Ellipse.Width = e.GetPosition(MyCanvas).X - ManualDraw.StartPoint.X;
+                }
+                if (e.GetPosition(MyCanvas).Y - ManualDraw.StartPoint.Y < 0)
+                {
+                    Canvas.SetTop(ManualDraw.Ellipse, e.GetPosition(MyCanvas).Y);
+                    ManualDraw.Ellipse.Height = -(e.GetPosition(MyCanvas).Y - ManualDraw.StartPoint.Y);
+                }
+                else
+                {
+                    ManualDraw.Ellipse.Height = e.GetPosition(MyCanvas).Y - ManualDraw.StartPoint.Y;
+                }
+            }
         }
 
         private void MyCanvasLeftUp(object sender, MouseButtonEventArgs e)
         {
-            ManualDraw.StartPoint = new Point();
-            ManualDraw.Rectangle = new Rectangle();
+            if (ManualDraw.DrawingMode != 3)
+            {
+                ManualDraw.DrawingMode = 3;
+                ManualDraw.Rectangle.Cursor = Cursors.Hand;
+                ManualDraw.Ellipse.Cursor = Cursors.Hand;
+                ManualDraw.StartPoint = new Point();
+                ManualDraw.Rectangle = new Rectangle();
+                ManualDraw.Ellipse = new Ellipse();
+                MyCanvas.Cursor = Cursors.Arrow;
+            }
         }
     }
 }
