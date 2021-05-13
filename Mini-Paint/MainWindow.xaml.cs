@@ -21,6 +21,9 @@ namespace Mini_Paint
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Random Random = new Random();
+        private ManualDraw ManualDraw = new ManualDraw();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -33,32 +36,31 @@ namespace Mini_Paint
 
         private void RandomShapeCreator(int n)
         {
-            Random random = new Random();
             for (int i = 0; i < n; i++)
             {
-                if (random.Next(0, 2) < 1)
+                if (Random.Next(0, 2) < 1)
                 {
-                    int sizeX = random.Next(100, 200);
-                    int sizeY = random.Next(100, 200);
-                    DrawEllipse((double)random.Next(sizeX, (int)MyCanvas.ActualWidth) - sizeX,
-                                (double)random.Next(sizeY, (int)MyCanvas.ActualHeight) - sizeY,
+                    int sizeX = Random.Next(100, 200);
+                    int sizeY = Random.Next(100, 200);
+                    DrawEllipse((double)Random.Next(sizeX, (int)MyCanvas.ActualWidth) - sizeX,
+                                (double)Random.Next(sizeY, (int)MyCanvas.ActualHeight) - sizeY,
                                 sizeX,
                                 sizeY,
-                                (byte)random.Next(0, 255),
-                                (byte)random.Next(0, 255),
-                                (byte)random.Next(0, 255));
+                                (byte)Random.Next(0, 255),
+                                (byte)Random.Next(0, 255),
+                                (byte)Random.Next(0, 255));
                 }
                 else
                 {
-                    int sizeX = random.Next(100, 200);
-                    int sizeY = random.Next(100, 200);
-                    DrawRectangle((double)random.Next(sizeX, (int)MyCanvas.ActualWidth) - sizeX,
-                                  (double)random.Next(sizeY, (int)MyCanvas.ActualHeight) - sizeY,
+                    int sizeX = Random.Next(100, 200);
+                    int sizeY = Random.Next(100, 200);
+                    DrawRectangle((double)Random.Next(sizeX, (int)MyCanvas.ActualWidth) - sizeX,
+                                  (double)Random.Next(sizeY, (int)MyCanvas.ActualHeight) - sizeY,
                                   sizeX,
                                   sizeY,
-                                  (byte)random.Next(0, 255),
-                                  (byte)random.Next(0, 255),
-                                  (byte)random.Next(0, 255));
+                                  (byte)Random.Next(0, 255),
+                                  (byte)Random.Next(0, 255),
+                                  (byte)Random.Next(0, 255));
                 }
             }
         }
@@ -180,18 +182,17 @@ namespace Mini_Paint
 
         private void RandomColorsButtonClick(object sender, RoutedEventArgs e)
         {
-            SolidColorBrush solidColorBrush = new SolidColorBrush();
-            Random random = new Random();
+            SolidColorBrush solidColorBrush;
             foreach (var o in MyCanvas.Children)
             {
                 if (o is Ellipse)
                 {
                     if (((Ellipse)o).Effect != null)
                     {
-                        var red = (byte)random.Next(0, 255);
-                        var green = (byte)random.Next(0, 255);
-                        var blue = (byte)random.Next(0, 255);
-                        solidColorBrush.Color = Color.FromArgb(255, red, green, blue);
+                        solidColorBrush = new SolidColorBrush(Color.FromArgb(255,
+                                                                             (byte)Random.Next(0, 255),
+                                                                             (byte)Random.Next(0, 255),
+                                                                             (byte)Random.Next(0, 255)));
                         ((Ellipse)o).Fill = solidColorBrush;
                     }
                 }
@@ -199,10 +200,10 @@ namespace Mini_Paint
                 {
                     if (((Rectangle)o).Effect != null)
                     {
-                        var red = (byte)random.Next(0, 255);
-                        var green = (byte)random.Next(0, 255);
-                        var blue = (byte)random.Next(0, 255);
-                        solidColorBrush.Color = Color.FromArgb(255, red, green, blue);
+                        solidColorBrush = new SolidColorBrush(Color.FromArgb(255,
+                                                                             (byte)Random.Next(0, 255),
+                                                                             (byte)Random.Next(0, 255),
+                                                                             (byte)Random.Next(0, 255)));
                         ((Rectangle)o).Fill = solidColorBrush;
                     }
                 }
@@ -230,28 +231,26 @@ namespace Mini_Paint
         {
             if (ManualDraw.DrawingMode == 1)
             {
-                Random random = new Random();
                 ManualDraw.StartPoint = e.GetPosition(MyCanvas);
                 ManualDraw.Rectangle = DrawRectangle(e.GetPosition(MyCanvas).X,
                                                      e.GetPosition(MyCanvas).Y,
                                                      0,
                                                      0,
-                                                     (byte)random.Next(0, 255),
-                                                     (byte)random.Next(0, 255),
-                                                     (byte)random.Next(0, 255));
+                                                     (byte)Random.Next(0, 255),
+                                                     (byte)Random.Next(0, 255),
+                                                     (byte)Random.Next(0, 255));
                 ManualDraw.Rectangle.Cursor = null;
             }
             if (ManualDraw.DrawingMode == 2)
             {
-                Random random = new Random();
                 ManualDraw.StartPoint = e.GetPosition(MyCanvas);
                 ManualDraw.Ellipse = DrawEllipse(e.GetPosition(MyCanvas).X,
                                                  e.GetPosition(MyCanvas).Y,
                                                  0,
                                                  0,
-                                                 (byte)random.Next(0, 255),
-                                                 (byte)random.Next(0, 255),
-                                                 (byte)random.Next(0, 255));
+                                                 (byte)Random.Next(0, 255),
+                                                 (byte)Random.Next(0, 255),
+                                                 (byte)Random.Next(0, 255));
                 ManualDraw.Ellipse.Cursor = null;
             }
         }
@@ -306,12 +305,9 @@ namespace Mini_Paint
         {
             if (ManualDraw.DrawingMode != 3)
             {
-                ManualDraw.DrawingMode = 3;
                 ManualDraw.Rectangle.Cursor = Cursors.Hand;
                 ManualDraw.Ellipse.Cursor = Cursors.Hand;
-                ManualDraw.StartPoint = new Point();
-                ManualDraw.Rectangle = new Rectangle();
-                ManualDraw.Ellipse = new Ellipse();
+                ManualDraw = new ManualDraw();
                 MyCanvas.Cursor = Cursors.Arrow;
             }
         }
