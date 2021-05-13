@@ -21,6 +21,16 @@
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="TextAlignment" Value="Center"/>
         </Style>
+        <Style x:Key="TextBoxStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Width" Value="100"/>
+        </Style>
+        <Style x:Key="SeperatorRectangleStyle" TargetType="{x:Type Rectangle}">
+            <Setter Property="Stroke" Value="Black"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="Width" Value="1"/>
+            <Setter Property="Margin" Value="5,0,5,0"/>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid>
@@ -40,13 +50,32 @@
                     <Button x:Name="EllipseButton" Style="{StaticResource ButtonStyle}" Click="ShapeButtonClick">
                         <TextBlock Text="Ellipse" Style="{StaticResource ButtonTextBlockStyle}"/>
                     </Button>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBox Grid.Row="0" Style="{StaticResource TextBoxStyle}"/>
+                        <TextBox Grid.Row="1" Style="{StaticResource TextBoxStyle}"/>
+                        <TextBox Grid.Row="2" Style="{StaticResource TextBoxStyle}"/>
+                    </Grid>
+                    <Rectangle Style="{StaticResource SeperatorRectangleStyle}"/>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Rectangle Style="{StaticResource SeperatorRectangleStyle}"/>
                     <Button Style="{StaticResource ButtonStyle}" Click="DeleteButtonClick">
                         <TextBlock Text="Delete" Style="{StaticResource ButtonTextBlockStyle}"/>
                     </Button>
                     <Button Style="{StaticResource ButtonStyle}" Click="RandomColorsButtonClick">
                         <TextBlock Text="Random Colors" Style="{StaticResource ButtonTextBlockStyle}"/>
+                    </Button>
+                    <Rectangle Style="{StaticResource SeperatorRectangleStyle}"/>
+                    <Button Style="{StaticResource ButtonStyle}">
+                        <TextBlock Text="Export to .png" Style="{StaticResource ButtonTextBlockStyle}"/>
+                    </Button>
+                    <Button Style="{StaticResource ButtonStyle}">
+                        <TextBlock Text="Language" Style="{StaticResource ButtonTextBlockStyle}"/>
                     </Button>
                 </StackPanel>
             </Grid>
