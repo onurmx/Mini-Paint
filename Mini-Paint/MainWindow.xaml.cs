@@ -80,7 +80,7 @@ namespace Mini_Paint
             Canvas.SetTop(ellipse, top);
         }
 
-        private void DrawRectangle(double left, double top, int width, int height, byte red, byte green, byte blue)
+        private Rectangle DrawRectangle(double left, double top, int width, int height, byte red, byte green, byte blue)
         {
             Rectangle rectangle = new Rectangle
             {
@@ -97,6 +97,8 @@ namespace Mini_Paint
             MyCanvas.Children.Add(rectangle);
             Canvas.SetLeft(rectangle, left);
             Canvas.SetTop(rectangle, top);
+
+            return rectangle;
         }
 
         private void ShapeGlow(object sender, MouseButtonEventArgs e)
@@ -203,6 +205,55 @@ namespace Mini_Paint
                     }
                 }
             }
+        }
+
+        private void ShapeButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (sender == RectangleButton)
+            {
+
+            }
+            if (sender == EllipseButton)
+            {
+
+            }
+        }
+
+        private void MyCanvasLeftDown(object sender, MouseButtonEventArgs e)
+        {
+            ManualDraw.StartPoint = e.GetPosition(MyCanvas);
+            ManualDraw.Rectangle = DrawRectangle(e.GetPosition(MyCanvas).X, e.GetPosition(MyCanvas).Y, 0, 0, 255, 255, 255);
+        }
+
+        private void MyCanvasMouseMove(object sender, MouseEventArgs e)
+        {
+            if (ManualDraw.Rectangle != new Rectangle())
+            {
+                if (e.GetPosition(MyCanvas).X - ManualDraw.StartPoint.X < 0)
+                {
+                    Canvas.SetLeft(ManualDraw.Rectangle, e.GetPosition(MyCanvas).X);
+                    ManualDraw.Rectangle.Width = -(e.GetPosition(MyCanvas).X - ManualDraw.StartPoint.X);
+                }
+                else
+                {
+                    ManualDraw.Rectangle.Width = e.GetPosition(MyCanvas).X - ManualDraw.StartPoint.X;
+                }
+                if (e.GetPosition(MyCanvas).Y - ManualDraw.StartPoint.Y < 0)
+                {
+                    Canvas.SetTop(ManualDraw.Rectangle, e.GetPosition(MyCanvas).Y);
+                    ManualDraw.Rectangle.Height = -(e.GetPosition(MyCanvas).Y - ManualDraw.StartPoint.Y);
+                }
+                else
+                {
+                    ManualDraw.Rectangle.Height = e.GetPosition(MyCanvas).Y - ManualDraw.StartPoint.Y;
+                }
+            }
+        }
+
+        private void MyCanvasLeftUp(object sender, MouseButtonEventArgs e)
+        {
+            ManualDraw.StartPoint = new Point();
+            ManualDraw.Rectangle = new Rectangle();
         }
     }
 }

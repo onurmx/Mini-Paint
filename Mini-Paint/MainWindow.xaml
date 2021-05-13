@@ -34,10 +34,10 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
-                    <Button Style="{StaticResource ButtonStyle}">
+                    <Button x:Name="RectangleButton" Style="{StaticResource ButtonStyle}" Click="ShapeButtonClick">
                         <TextBlock Text="Rectangle" Style="{StaticResource ButtonTextBlockStyle}"/>
                     </Button>
-                    <Button Style="{StaticResource ButtonStyle}">
+                    <Button x:Name="EllipseButton" Style="{StaticResource ButtonStyle}" Click="ShapeButtonClick">
                         <TextBlock Text="Ellipse" Style="{StaticResource ButtonTextBlockStyle}"/>
                     </Button>
                 </StackPanel>
@@ -50,7 +50,12 @@
                     </Button>
                 </StackPanel>
             </Grid>
-            <Canvas Grid.Row="1" x:Name="MyCanvas">
+            <Canvas
+                Grid.Row="1"
+                x:Name="MyCanvas"
+                MouseLeftButtonDown="MyCanvasLeftDown"
+                MouseMove="MyCanvasMouseMove"
+                MouseLeftButtonUp="MyCanvasLeftUp">
                 <Canvas.Background>
                     <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
                         <GradientStop Color="Black" Offset="0"/>
