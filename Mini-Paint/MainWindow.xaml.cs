@@ -25,6 +25,7 @@ namespace Mini_Paint
     {
         private Random Random = new Random();
         private ManualDraw ManualDraw = new ManualDraw();
+        private int LanguageMode = 1; // 1-ENGLISH, 2-POLISH
 
         public MainWindow()
         {
@@ -111,7 +112,7 @@ namespace Mini_Paint
 
         private void ObjectLeftDown(object sender, MouseButtonEventArgs e)
         {
-            if(((UIElement)sender).Effect == null)
+            if (((UIElement)sender).Effect == null)
             {
                 DeselectAllObjects();
                 SelectObject(sender);
@@ -249,6 +250,24 @@ namespace Mini_Paint
             foreach (var o in MyCanvas.Children)
             {
                 DeselectObject(o);
+            }
+        }
+
+        private void LanguageButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (LanguageMode == 1)
+            {
+                TextTranslationSource.Instance.CurrentCulture = new System.Globalization.CultureInfo("pl");
+                ImageTranslationSource.Instance.CurrentCulture = new System.Globalization.CultureInfo("pl");
+                LanguageMode = 2;
+                return;
+            }
+            if (LanguageMode == 2)
+            {
+                TextTranslationSource.Instance.CurrentCulture = new System.Globalization.CultureInfo("en");
+                ImageTranslationSource.Instance.CurrentCulture = new System.Globalization.CultureInfo("en");
+                LanguageMode = 1;
+                return;
             }
         }
 

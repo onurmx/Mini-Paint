@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Mini_Paint"
+        xmlns:util="clr-namespace:Mini_Paint"
         mc:Ignorable="d"
         Title="Mini Paint"
         Height="450" Width="800"
@@ -65,10 +66,10 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
                     <Button x:Name="RectangleButton" Style="{StaticResource ButtonStyle}" Click="ShapeButtonClick">
-                        <TextBlock Text="Rectangle" Style="{StaticResource ButtonTextBlockStyle}"/>
+                        <TextBlock Text="{util:TextLocalization Rectangle}" Style="{StaticResource ButtonTextBlockStyle}"/>
                     </Button>
                     <Button x:Name="EllipseButton" Style="{StaticResource ButtonStyle}" Click="ShapeButtonClick">
-                        <TextBlock Text="Ellipse" Style="{StaticResource ButtonTextBlockStyle}"/>
+                        <TextBlock Text="{util:TextLocalization Ellipse}" Style="{StaticResource ButtonTextBlockStyle}"/>
                     </Button>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -81,10 +82,10 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Grid.Row="0" Style="{StaticResource LabelStyle}">Width:</Label>
-                        <Label Grid.Column="0" Grid.Row="1" Style="{StaticResource LabelStyle}">Height:</Label>
-                        <Label Grid.Column="0" Grid.Row="2" Style="{StaticResource LabelStyle}">Color:</Label>
-                        <Label Grid.Column="0" Grid.Row="3" Style="{StaticResource LabelStyle}">Angle: 0°</Label>
+                        <Label Grid.Column="0" Grid.Row="0" Content="{util:TextLocalization Width}" Style="{StaticResource LabelStyle}"/>
+                        <Label Grid.Column="0" Grid.Row="1" Content="{util:TextLocalization Height}" Style="{StaticResource LabelStyle}"/>
+                        <Label Grid.Column="0" Grid.Row="2" Content="{util:TextLocalization Color}" Style="{StaticResource LabelStyle}"/>
+                        <Label Grid.Column="0" Grid.Row="3" Content="{util:TextLocalization Angle}" Style="{StaticResource LabelStyle}"/>
                         <TextBox Grid.Column="1" Grid.Row="0" Style="{StaticResource TextBoxStyle}"/>
                         <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource TextBoxStyle}"/>
                         <ComboBox Grid.Column="1" Grid.Row="2" Style="{StaticResource ComboBoxStyle}"/>
@@ -95,17 +96,17 @@
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
                     <Rectangle Style="{StaticResource SeperatorRectangleStyle}"/>
                     <Button Style="{StaticResource ButtonStyle}" Click="DeleteButtonClick">
-                        <TextBlock Text="Delete" Style="{StaticResource ButtonTextBlockStyle}"/>
+                        <TextBlock Text="{util:TextLocalization Delete}" Style="{StaticResource ButtonTextBlockStyle}"/>
                     </Button>
                     <Button Style="{StaticResource ButtonStyle}" Click="RandomColorsButtonClick">
-                        <TextBlock Text="Random Colors" Style="{StaticResource ButtonTextBlockStyle}"/>
+                        <TextBlock Text="{util:TextLocalization RandomColors}" Style="{StaticResource ButtonTextBlockStyle}"/>
                     </Button>
                     <Rectangle Style="{StaticResource SeperatorRectangleStyle}"/>
                     <Button Style="{StaticResource ButtonStyle}" Click="ExportButtonClick">
-                        <TextBlock Text="Export to .png" Style="{StaticResource ButtonTextBlockStyle}"/>
+                        <TextBlock Text="{util:TextLocalization ExportToPng}" Style="{StaticResource ButtonTextBlockStyle}"/>
                     </Button>
-                    <Button Style="{StaticResource ButtonStyle}">
-                        <TextBlock Text="Language" Style="{StaticResource ButtonTextBlockStyle}"/>
+                    <Button Style="{StaticResource ButtonStyle}" Click="LanguageButtonClick">
+                        <Image Source="{util:ImageLocalization Flag}" Stretch="Fill"/>
                     </Button>
                 </StackPanel>
             </Grid>
