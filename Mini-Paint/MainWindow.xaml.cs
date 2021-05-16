@@ -248,10 +248,7 @@ namespace Mini_Paint
         {
             foreach (var o in MyCanvas.Children)
             {
-                if (((UIElement)o).Effect != null)
-                {
-                    ((UIElement)o).Effect = null;
-                }
+                DeselectObject(o);
             }
         }
 
