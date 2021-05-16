@@ -77,7 +77,8 @@ namespace Mini_Paint
             ellipse.Width = width;
             ellipse.Height = height;
             ellipse.Cursor = Cursors.Hand;
-            ellipse.MouseRightButtonDown += ShapeGlow;
+            ellipse.MouseLeftButtonDown += ObjectLeftDown;
+            ellipse.MouseRightButtonDown += ObjectRightDown;
 
             MyCanvas.Children.Add(ellipse);
             Canvas.SetLeft(ellipse, left);
@@ -98,7 +99,8 @@ namespace Mini_Paint
 
             rectangle.Fill = solidColorBrush;
             rectangle.Cursor = Cursors.Hand;
-            rectangle.MouseRightButtonDown += ShapeGlow;
+            rectangle.MouseLeftButtonDown += ObjectLeftDown;
+            rectangle.MouseRightButtonDown += ObjectRightDown;
 
             MyCanvas.Children.Add(rectangle);
             Canvas.SetLeft(rectangle, left);
@@ -107,45 +109,24 @@ namespace Mini_Paint
             return rectangle;
         }
 
-        private void ShapeGlow(object sender, MouseButtonEventArgs e)
+        private void ObjectLeftDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender is Ellipse)
+            if(((UIElement)sender).Effect == null)
             {
-                if (((Ellipse)sender).Effect == null)
-                {
-                    ((Ellipse)sender).Effect = new DropShadowEffect
-                    {
-                        Color = new Color { A = 255, R = 255, G = 255, B = 255 },
-                        Direction = 270,
-                        ShadowDepth = 0,
-                        BlurRadius = 50
-                    };
-                    Canvas.SetZIndex((Ellipse)sender, 1);
-                }
-                else
-                {
-                    ((Ellipse)sender).Effect = null;
-                    Canvas.SetZIndex((Ellipse)sender, 0);
-                }
+                DeselectAllObjects();
+                SelectObject(sender);
             }
-            if (sender is Rectangle)
+        }
+
+        private void ObjectRightDown(object sender, MouseButtonEventArgs e)
+        {
+            if (((UIElement)sender).Effect == null)
             {
-                if (((Rectangle)sender).Effect == null)
-                {
-                    ((Rectangle)sender).Effect = new DropShadowEffect
-                    {
-                        Color = new Color { A = 255, R = 255, G = 255, B = 255 },
-                        Direction = 270,
-                        ShadowDepth = 0,
-                        BlurRadius = 50
-                    };
-                    Canvas.SetZIndex((Rectangle)sender, 1);
-                }
-                else
-                {
-                    ((Rectangle)sender).Effect = null;
-                    Canvas.SetZIndex((Rectangle)sender, 0);
-                }
+                SelectObject(sender);
+            }
+            else
+            {
+                DeselectObject(sender);
             }
         }
 
@@ -154,31 +135,14 @@ namespace Mini_Paint
             List<UIElement> DeleteList = new List<UIElement>();
             foreach (var o in MyCanvas.Children)
             {
-                if (o is Ellipse)
+                if (((UIElement)o).Effect != null)
                 {
-                    if (((Ellipse)o).Effect != null)
-                    {
-                        DeleteList.Add((Ellipse)o);
-                    }
-                }
-                if (o is Rectangle)
-                {
-                    if (((Rectangle)o).Effect != null)
-                    {
-                        DeleteList.Add((Rectangle)o);
-                    }
+                    DeleteList.Add((UIElement)o);
                 }
             }
             foreach (var o in DeleteList)
             {
-                if (o is Ellipse)
-                {
-                    MyCanvas.Children.Remove((Ellipse)o);
-                }
-                if (o is Rectangle)
-                {
-                    MyCanvas.Children.Remove((Rectangle)o);
-                }
+                MyCanvas.Children.Remove(o);
             }
         }
 
@@ -187,27 +151,13 @@ namespace Mini_Paint
             SolidColorBrush solidColorBrush;
             foreach (var o in MyCanvas.Children)
             {
-                if (o is Ellipse)
+                if (((UIElement)o).Effect != null)
                 {
-                    if (((Ellipse)o).Effect != null)
-                    {
-                        solidColorBrush = new SolidColorBrush(Color.FromArgb(255,
+                    solidColorBrush = new SolidColorBrush(Color.FromArgb(255,
                                                                              (byte)Random.Next(0, 255),
                                                                              (byte)Random.Next(0, 255),
                                                                              (byte)Random.Next(0, 255)));
-                        ((Ellipse)o).Fill = solidColorBrush;
-                    }
-                }
-                if (o is Rectangle)
-                {
-                    if (((Rectangle)o).Effect != null)
-                    {
-                        solidColorBrush = new SolidColorBrush(Color.FromArgb(255,
-                                                                             (byte)Random.Next(0, 255),
-                                                                             (byte)Random.Next(0, 255),
-                                                                             (byte)Random.Next(0, 255)));
-                        ((Rectangle)o).Fill = solidColorBrush;
-                    }
+                    ((Shape)o).Fill = solidColorBrush;
                 }
             }
         }
@@ -242,6 +192,7 @@ namespace Mini_Paint
                                                      (byte)Random.Next(0, 255),
                                                      (byte)Random.Next(0, 255));
                 ManualDraw.Rectangle.Cursor = null;
+                return;
             }
             if (ManualDraw.DrawingMode == 2)
             {
@@ -254,53 +205,14 @@ namespace Mini_Paint
                                                  (byte)Random.Next(0, 255),
                                                  (byte)Random.Next(0, 255));
                 ManualDraw.Ellipse.Cursor = null;
+                return;
             }
+            DeselectAllObjects();
         }
 
         private void MyCanvasMouseMove(object sender, MouseEventArgs e)
         {
-            if (ManualDraw.DrawingMode == 1)
-            {
-                if (e.GetPosition(MyCanvas).X - ManualDraw.StartPoint.X < 0)
-                {
-                    Canvas.SetLeft(ManualDraw.Rectangle, e.GetPosition(MyCanvas).X);
-                    ManualDraw.Rectangle.Width = -(e.GetPosition(MyCanvas).X - ManualDraw.StartPoint.X);
-                }
-                else
-                {
-                    ManualDraw.Rectangle.Width = e.GetPosition(MyCanvas).X - ManualDraw.StartPoint.X;
-                }
-                if (e.GetPosition(MyCanvas).Y - ManualDraw.StartPoint.Y < 0)
-                {
-                    Canvas.SetTop(ManualDraw.Rectangle, e.GetPosition(MyCanvas).Y);
-                    ManualDraw.Rectangle.Height = -(e.GetPosition(MyCanvas).Y - ManualDraw.StartPoint.Y);
-                }
-                else
-                {
-                    ManualDraw.Rectangle.Height = e.GetPosition(MyCanvas).Y - ManualDraw.StartPoint.Y;
-                }
-            }
-            if (ManualDraw.DrawingMode == 2)
-            {
-                if (e.GetPosition(MyCanvas).X - ManualDraw.StartPoint.X < 0)
-                {
-                    Canvas.SetLeft(ManualDraw.Ellipse, e.GetPosition(MyCanvas).X);
-                    ManualDraw.Ellipse.Width = -(e.GetPosition(MyCanvas).X - ManualDraw.StartPoint.X);
-                }
-                else
-                {
-                    ManualDraw.Ellipse.Width = e.GetPosition(MyCanvas).X - ManualDraw.StartPoint.X;
-                }
-                if (e.GetPosition(MyCanvas).Y - ManualDraw.StartPoint.Y < 0)
-                {
-                    Canvas.SetTop(ManualDraw.Ellipse, e.GetPosition(MyCanvas).Y);
-                    ManualDraw.Ellipse.Height = -(e.GetPosition(MyCanvas).Y - ManualDraw.StartPoint.Y);
-                }
-                else
-                {
-                    ManualDraw.Ellipse.Height = e.GetPosition(MyCanvas).Y - ManualDraw.StartPoint.Y;
-                }
-            }
+            ManualDraw.MouseMove(MyCanvas, e);
         }
 
         private void MyCanvasLeftUp(object sender, MouseButtonEventArgs e)
@@ -311,6 +223,35 @@ namespace Mini_Paint
                 ManualDraw.Ellipse.Cursor = Cursors.Hand;
                 ManualDraw = new ManualDraw();
                 MyCanvas.Cursor = Cursors.Arrow;
+            }
+        }
+
+        private void SelectObject(object sender)
+        {
+            ((UIElement)sender).Effect = new DropShadowEffect
+            {
+                Color = new Color { A = 255, R = 255, G = 255, B = 255 },
+                Direction = 270,
+                ShadowDepth = 0,
+                BlurRadius = 50
+            };
+            Canvas.SetZIndex((UIElement)sender, 1);
+        }
+
+        private void DeselectObject(object sender)
+        {
+            ((UIElement)sender).Effect = null;
+            Canvas.SetZIndex((UIElement)sender, 0);
+        }
+
+        private void DeselectAllObjects()
+        {
+            foreach (var o in MyCanvas.Children)
+            {
+                if (((UIElement)o).Effect != null)
+                {
+                    ((UIElement)o).Effect = null;
+                }
             }
         }
 

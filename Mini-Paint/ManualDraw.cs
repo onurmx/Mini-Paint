@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Shapes;
 using System.Windows;
+using System.Windows.Input;
+using System.Windows.Controls;
 
 namespace Mini_Paint
 {
@@ -14,5 +16,51 @@ namespace Mini_Paint
         public Point StartPoint = new Point();
         public Rectangle Rectangle = new Rectangle();
         public Ellipse Ellipse = new Ellipse();
+
+        public void MouseMove(Canvas canvas, MouseEventArgs e)
+        {
+            if (DrawingMode == 1)
+            {
+                if (e.GetPosition(canvas).X - StartPoint.X < 0)
+                {
+                    Canvas.SetLeft(Rectangle, e.GetPosition(canvas).X);
+                    Rectangle.Width = -(e.GetPosition(canvas).X - StartPoint.X);
+                }
+                else
+                {
+                    Rectangle.Width = e.GetPosition(canvas).X - StartPoint.X;
+                }
+                if (e.GetPosition(canvas).Y - StartPoint.Y < 0)
+                {
+                    Canvas.SetTop(Rectangle, e.GetPosition(canvas).Y);
+                    Rectangle.Height = -(e.GetPosition(canvas).Y - StartPoint.Y);
+                }
+                else
+                {
+                    Rectangle.Height = e.GetPosition(canvas).Y - StartPoint.Y;
+                }
+            }
+            if (DrawingMode == 2)
+            {
+                if (e.GetPosition(canvas).X - StartPoint.X < 0)
+                {
+                    Canvas.SetLeft(Ellipse, e.GetPosition(canvas).X);
+                    Ellipse.Width = -(e.GetPosition(canvas).X - StartPoint.X);
+                }
+                else
+                {
+                    Ellipse.Width = e.GetPosition(canvas).X - StartPoint.X;
+                }
+                if (e.GetPosition(canvas).Y - StartPoint.Y < 0)
+                {
+                    Canvas.SetTop(Ellipse, e.GetPosition(canvas).Y);
+                    Ellipse.Height = -(e.GetPosition(canvas).Y - StartPoint.Y);
+                }
+                else
+                {
+                    Ellipse.Height = e.GetPosition(canvas).Y - StartPoint.Y;
+                }
+            }
+        }
     }
 }
