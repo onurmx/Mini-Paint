@@ -281,25 +281,34 @@ namespace Mini_Paint
             Nullable<bool> result = saveFileDialog.ShowDialog();
             if (result == true)
             {
-                var rect = new Rect(MyCanvas.RenderSize);
-                var visual = new DrawingVisual();
-                using (var dc = visual.RenderOpen())
+                Rect bounds = VisualTreeHelper.GetDescendantBounds(MyCanvas);
+                RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap((int)bounds.Width,
+                                                                               (int)bounds.Height,
+                                                                               96D,
+                                                                               96D,
+                                                                               PixelFormats.Default);
+                DrawingVisual drawingVisual = new DrawingVisual();
+                using (DrawingContext drawingContext = drawingVisual.RenderOpen())
                 {
-                    dc.DrawRectangle(new VisualBrush(MyCanvas), null, rect);
+                    VisualBrush visualBrush = new VisualBrush(MyCanvas);
+                    drawingContext.DrawRectangle(visualBrush, null, new Rect(new Point(), bounds.Size));
                 }
-                var bitmap = new RenderTargetBitmap((int)rect.Width,
-                                                    (int)rect.Height,
-                                                    96,
-                                                    96,
-                                                    PixelFormats.Default);
-                bitmap.Render(visual);
-                var encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                renderTargetBitmap.Render(drawingVisual);
 
+
+                CroppedBitmap croppedBitmap = new CroppedBitmap(renderTargetBitmap,
+                                                                new Int32Rect((int)bounds.X,
+                                                                              (int)bounds.Y,
+                                                                              (int)MyCanvas.ActualWidth,
+                                                                              (int)MyCanvas.ActualHeight));
+
+
+                PngBitmapEncoder pngBitmapEncoder = new PngBitmapEncoder();
+                pngBitmapEncoder.Frames.Add(BitmapFrame.Create(croppedBitmap));
                 string filename = saveFileDialog.FileName;
                 using (var file = File.OpenWrite(filename))
                 {
-                    encoder.Save(file);
+                    pngBitmapEncoder.Save(file);
                 }
             }
         }
