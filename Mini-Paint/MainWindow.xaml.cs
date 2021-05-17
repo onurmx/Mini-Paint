@@ -193,6 +193,7 @@ namespace Mini_Paint
                                                      (byte)Random.Next(0, 255),
                                                      (byte)Random.Next(0, 255));
                 ManualDraw.Rectangle.Cursor = null;
+                Mouse.Capture(MyCanvas);
                 return;
             }
             if (ManualDraw.DrawingMode == 2)
@@ -206,9 +207,9 @@ namespace Mini_Paint
                                                  (byte)Random.Next(0, 255),
                                                  (byte)Random.Next(0, 255));
                 ManualDraw.Ellipse.Cursor = null;
+                Mouse.Capture(MyCanvas);
                 return;
             }
-            DeselectAllObjects();
         }
 
         private void MyCanvasMouseMove(object sender, MouseEventArgs e)
@@ -224,6 +225,7 @@ namespace Mini_Paint
                 ManualDraw.Ellipse.Cursor = Cursors.Hand;
                 ManualDraw = new ManualDraw();
                 MyCanvas.Cursor = Cursors.Arrow;
+                Mouse.Capture(null);
             }
         }
 
