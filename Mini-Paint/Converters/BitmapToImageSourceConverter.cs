@@ -16,31 +16,27 @@ namespace Mini_Paint
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var bitmap = value as System.Drawing.Bitmap;
+            var bitmap = value as Bitmap;
             if (bitmap == null)
+            {
                 throw new ArgumentNullException("bitmap");
-
+            }
             var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
-
-            var bitmapData = bitmap.LockBits(
-                rect,
-                ImageLockMode.ReadWrite,
-                System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
+            var bitmapData = bitmap.LockBits(rect,
+                                             ImageLockMode.ReadWrite,
+                                             System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             try
             {
                 var size = (rect.Width * rect.Height) * 4;
-
-                return BitmapSource.Create(
-                    bitmap.Width,
-                    bitmap.Height,
-                    bitmap.HorizontalResolution,
-                    bitmap.VerticalResolution,
-                    PixelFormats.Bgra32,
-                    null,
-                    bitmapData.Scan0,
-                    size,
-                    bitmapData.Stride);
+                return BitmapSource.Create(bitmap.Width,
+                                           bitmap.Height,
+                                           bitmap.HorizontalResolution,
+                                           bitmap.VerticalResolution,
+                                           PixelFormats.Bgra32,
+                                           null,
+                                           bitmapData.Scan0,
+                                           size,
+                                           bitmapData.Stride);
             }
             finally
             {
