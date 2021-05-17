@@ -194,7 +194,6 @@ namespace Mini_Paint
                                                      (byte)Random.Next(0, 255));
                 ManualDraw.Rectangle.Cursor = null;
                 Mouse.Capture(MyCanvas);
-                return;
             }
             if (ManualDraw.DrawingMode == 2)
             {
@@ -208,7 +207,17 @@ namespace Mini_Paint
                                                  (byte)Random.Next(0, 255));
                 ManualDraw.Ellipse.Cursor = null;
                 Mouse.Capture(MyCanvas);
-                return;
+            }
+            if (ManualDraw.DrawingMode == 3)
+            {
+                foreach (UIElement o in MyCanvas.Children)
+                {
+                    if (o.IsMouseOver == true)
+                    {
+                        return;
+                    }
+                }
+                DeselectAllObjects();
             }
         }
 
