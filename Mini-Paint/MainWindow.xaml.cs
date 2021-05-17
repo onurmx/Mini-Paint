@@ -278,27 +278,28 @@ namespace Mini_Paint
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.FileName = "savedimage"; // Default file name
             saveFileDialog.Filter = "PNG File|*.png";
-
-            // Show save file dialog box
             Nullable<bool> result = saveFileDialog.ShowDialog();
-
-            // Process save file dialog box results
             if (result == true)
             {
-                // Save document
-                string filename = saveFileDialog.FileName;
-                //render ink to bitmap
-                RenderTargetBitmap rtb = new RenderTargetBitmap((int)MyCanvas.ActualWidth,
-                                                                (int)MyCanvas.ActualHeight,
-                                                                96d,
-                                                                96d, PixelFormats.Default);
-                rtb.Render(MyCanvas);
-
-                using (FileStream fs = new FileStream(filename, FileMode.Create))
+                var rect = new Rect(MyCanvas.RenderSize);
+                var visual = new DrawingVisual();
+                using (var dc = visual.RenderOpen())
                 {
-                    BmpBitmapEncoder encoder = new BmpBitmapEncoder();
-                    encoder.Frames.Add(BitmapFrame.Create(rtb));
-                    encoder.Save(fs);
+                    dc.DrawRectangle(new VisualBrush(MyCanvas), null, rect);
+                }
+                var bitmap = new RenderTargetBitmap((int)rect.Width,
+                                                    (int)rect.Height,
+                                                    96,
+                                                    96,
+                                                    PixelFormats.Default);
+                bitmap.Render(visual);
+                var encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bitmap));
+
+                string filename = saveFileDialog.FileName;
+                using (var file = File.OpenWrite(filename))
+                {
+                    encoder.Save(file);
                 }
             }
         }
