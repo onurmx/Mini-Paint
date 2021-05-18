@@ -47,7 +47,21 @@ namespace Mini_Paint
                 };
             }).ToList();
 
+            MyColorComboBoxSetter();
+
             RandomShapeCreator(4);
+        }
+
+        private void MyColorComboBoxSetter()
+        {
+            for (int i = 0; i < ColorInformations.Count; i++)
+            {
+                ComboBoxItem comboBoxItem = new ComboBoxItem();
+                SolidColorBrush solidColorBrush = new SolidColorBrush(ColorInformations[i].RGB);
+                comboBoxItem.Background = solidColorBrush;
+                comboBoxItem.Content = ColorInformations[i].Name;
+                MyColorComboBox.Items.Add(comboBoxItem);
+            }
         }
 
         private void RandomShapeCreator(int n)
@@ -203,27 +217,29 @@ namespace Mini_Paint
         {
             if (ManualDraw.DrawingMode == 1)
             {
+                ColorInfo RandomColorInfo = ColorInformations[Random.Next(0, ColorInformations.Count - 1)];
                 ManualDraw.StartPoint = e.GetPosition(MyCanvas);
                 ManualDraw.Rectangle = DrawRectangle(e.GetPosition(MyCanvas).X,
                                                      e.GetPosition(MyCanvas).Y,
                                                      0,
                                                      0,
-                                                     (byte)Random.Next(0, 255),
-                                                     (byte)Random.Next(0, 255),
-                                                     (byte)Random.Next(0, 255));
+                                                     RandomColorInfo.RGB.R,
+                                                     RandomColorInfo.RGB.G,
+                                                     RandomColorInfo.RGB.B);
                 ManualDraw.Rectangle.Cursor = null;
                 Mouse.Capture(MyCanvas);
             }
             if (ManualDraw.DrawingMode == 2)
             {
+                ColorInfo RandomColorInfo = ColorInformations[Random.Next(0, ColorInformations.Count - 1)];
                 ManualDraw.StartPoint = e.GetPosition(MyCanvas);
                 ManualDraw.Ellipse = DrawEllipse(e.GetPosition(MyCanvas).X,
                                                  e.GetPosition(MyCanvas).Y,
                                                  0,
                                                  0,
-                                                 (byte)Random.Next(0, 255),
-                                                 (byte)Random.Next(0, 255),
-                                                 (byte)Random.Next(0, 255));
+                                                 RandomColorInfo.RGB.R,
+                                                 RandomColorInfo.RGB.G,
+                                                 RandomColorInfo.RGB.B);
                 ManualDraw.Ellipse.Cursor = null;
                 Mouse.Capture(MyCanvas);
             }
@@ -268,6 +284,9 @@ namespace Mini_Paint
             };
             Canvas.SetZIndex((UIElement)sender, 1);
             this.DataContext = (UIElement)sender;
+
+
+            MyColorComboBox.IsEnabled = true;
         }
 
         private void DeselectObject(object sender)

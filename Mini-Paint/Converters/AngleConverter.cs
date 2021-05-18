@@ -16,7 +16,7 @@ namespace Mini_Paint
         {
             if(value != null)
             {
-                return ((RotateTransform)value).Angle.ToString();
+                return ((RotateTransform)value).Angle.ToString() + "°";
             }
             return null;
         }

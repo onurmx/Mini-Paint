@@ -44,7 +44,8 @@
             <Setter Property="Height" Value="20"/>
             <Setter Property="Width" Value="100"/>
             <Setter Property="Margin" Value="5,0,5,0"/>
-            <Setter Property="IsEnabled" Value="False"/>
+            <Setter Property="FontSize" Value="11"/>
+            <!--<Setter Property="IsEnabled" Value="False"/>-->
         </Style>
         <Style x:Key="SliderStyle" TargetType="{x:Type Slider}">
             <Setter Property="Height" Value="20"/>
@@ -53,6 +54,7 @@
             <Setter Property="IsEnabled" Value="False"/>
         </Style>
         <local:AngleConverter x:Key="AC"/>
+        <local:BrushToIndexConverter x:Key="BTIC"/>
     </Window.Resources>
     <Grid>
         <Grid>
@@ -92,7 +94,7 @@
                         </StackPanel>
                         <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Width}" Style="{StaticResource TextBoxStyle}"/>
                         <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Height}" Style="{StaticResource TextBoxStyle}"/>
-                        <ComboBox Grid.Column="1" Grid.Row="2" Style="{StaticResource ComboBoxStyle}"/>
+                        <ComboBox Grid.Column="1" Grid.Row="2" x:Name="MyColorComboBox" SelectedIndex="{Binding Fill, Converter={StaticResource BTIC}}" Style="{StaticResource ComboBoxStyle}"/>
                         <Slider Grid.Column="1" Grid.Row="3" Style="{StaticResource SliderStyle}"/>
                     </Grid>
                     <Rectangle Style="{StaticResource SeperatorRectangleStyle}"/>
