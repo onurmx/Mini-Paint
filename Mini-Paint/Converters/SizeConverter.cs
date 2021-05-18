@@ -21,9 +21,12 @@ namespace Mini_Paint
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (((string)value).All(x => char.IsNumber(x)) && ((string)value) != "")
+            if (value != null)
             {
-                return Int32.Parse((string)value);
+                if (((string)value).All(x => char.IsNumber(x)) && ((string)value) != "")
+                {
+                    return Int32.Parse((string)value);
+                }
             }
             return 0;
         }
