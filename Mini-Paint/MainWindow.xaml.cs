@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Windows.Media.Effects;
 using Microsoft.Win32;
 using System.IO;
+using System.Reflection;
 
 namespace Mini_Paint
 {
@@ -26,6 +27,7 @@ namespace Mini_Paint
         private Random Random = new Random();
         private ManualDraw ManualDraw = new ManualDraw();
         private int LanguageMode = 1; // 1-ENGLISH, 2-POLISH
+        private List<ColorInfo> ColorInformations = new List<ColorInfo>();
 
         public MainWindow()
         {
@@ -34,13 +36,26 @@ namespace Mini_Paint
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            var properties = typeof(Colors).GetProperties(BindingFlags.Static | BindingFlags.Public);
+            ColorInformations = properties.Select(prop =>
+            {
+                var color = (Color)prop.GetValue(null, null);
+                return new ColorInfo()
+                {
+                    Name = prop.Name,
+                    RGB = color
+                };
+            }).ToList();
+
             RandomShapeCreator(4);
         }
 
         private void RandomShapeCreator(int n)
         {
+            ColorInfo RandomColorInfo;
             for (int i = 0; i < n; i++)
             {
+                RandomColorInfo = ColorInformations[Random.Next(0, ColorInformations.Count - 1)];
                 if (Random.Next(0, 2) < 1)
                 {
                     int sizeX = Random.Next(100, 200);
@@ -49,9 +64,9 @@ namespace Mini_Paint
                                 (double)Random.Next(sizeY, (int)MyCanvas.ActualHeight) - sizeY,
                                 sizeX,
                                 sizeY,
-                                (byte)Random.Next(0, 255),
-                                (byte)Random.Next(0, 255),
-                                (byte)Random.Next(0, 255));
+                                RandomColorInfo.RGB.R,
+                                RandomColorInfo.RGB.G,
+                                RandomColorInfo.RGB.B);
                 }
                 else
                 {
@@ -61,9 +76,9 @@ namespace Mini_Paint
                                   (double)Random.Next(sizeY, (int)MyCanvas.ActualHeight) - sizeY,
                                   sizeX,
                                   sizeY,
-                                  (byte)Random.Next(0, 255),
-                                  (byte)Random.Next(0, 255),
-                                  (byte)Random.Next(0, 255));
+                                  RandomColorInfo.RGB.R,
+                                  RandomColorInfo.RGB.G,
+                                  RandomColorInfo.RGB.B);
                 }
             }
         }
@@ -72,11 +87,13 @@ namespace Mini_Paint
         {
             Ellipse ellipse = new Ellipse();
             SolidColorBrush solidColorBrush = new SolidColorBrush();
+            RotateTransform rotateTransform = new RotateTransform();
             solidColorBrush.Color = Color.FromArgb(255, red, green, blue);
 
             ellipse.Fill = solidColorBrush;
             ellipse.Width = width;
             ellipse.Height = height;
+            ellipse.RenderTransform = rotateTransform;
             ellipse.Cursor = Cursors.Hand;
             ellipse.MouseLeftButtonDown += ObjectLeftDown;
             ellipse.MouseRightButtonDown += ObjectRightDown;
@@ -96,9 +113,11 @@ namespace Mini_Paint
                 Height = height
             };
             SolidColorBrush solidColorBrush = new SolidColorBrush();
+            RotateTransform rotateTransform = new RotateTransform();
             solidColorBrush.Color = Color.FromArgb(255, red, green, blue);
 
             rectangle.Fill = solidColorBrush;
+            rectangle.RenderTransform = rotateTransform;
             rectangle.Cursor = Cursors.Hand;
             rectangle.MouseLeftButtonDown += ObjectLeftDown;
             rectangle.MouseRightButtonDown += ObjectRightDown;
@@ -248,6 +267,7 @@ namespace Mini_Paint
                 BlurRadius = 50
             };
             Canvas.SetZIndex((UIElement)sender, 1);
+            this.DataContext = (UIElement)sender;
         }
 
         private void DeselectObject(object sender)

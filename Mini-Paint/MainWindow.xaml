@@ -52,6 +52,7 @@
             <Setter Property="Margin" Value="5,0,5,0"/>
             <Setter Property="IsEnabled" Value="False"/>
         </Style>
+        <local:AngleConverter x:Key="AC"/>
     </Window.Resources>
     <Grid>
         <Grid>
@@ -85,9 +86,12 @@
                         <Label Grid.Column="0" Grid.Row="0" Content="{util:TextLocalization Width}" Style="{StaticResource LabelStyle}"/>
                         <Label Grid.Column="0" Grid.Row="1" Content="{util:TextLocalization Height}" Style="{StaticResource LabelStyle}"/>
                         <Label Grid.Column="0" Grid.Row="2" Content="{util:TextLocalization Color}" Style="{StaticResource LabelStyle}"/>
-                        <Label Grid.Column="0" Grid.Row="3" Content="{util:TextLocalization Angle}" Style="{StaticResource LabelStyle}"/>
-                        <TextBox Grid.Column="1" Grid.Row="0" Style="{StaticResource TextBoxStyle}"/>
-                        <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource TextBoxStyle}"/>
+                        <StackPanel Grid.Column="0" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Label Content="{util:TextLocalization Angle}" Style="{StaticResource LabelStyle}"/>
+                            <Label Content="{Binding RenderTransform, Converter={StaticResource AC}}" Style="{StaticResource LabelStyle}"></Label>
+                        </StackPanel>
+                        <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Width}" Style="{StaticResource TextBoxStyle}"/>
+                        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Height}" Style="{StaticResource TextBoxStyle}"/>
                         <ComboBox Grid.Column="1" Grid.Row="2" Style="{StaticResource ComboBoxStyle}"/>
                         <Slider Grid.Column="1" Grid.Row="3" Style="{StaticResource SliderStyle}"/>
                     </Grid>
