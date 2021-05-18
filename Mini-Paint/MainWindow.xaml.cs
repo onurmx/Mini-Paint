@@ -28,6 +28,7 @@ namespace Mini_Paint
         private ManualDraw ManualDraw = new ManualDraw();
         private int LanguageMode = 1; // 1-ENGLISH, 2-POLISH
         private List<ColorInfo> ColorInformations = new List<ColorInfo>();
+        private List<UIElement> SelectedObjects = new List<UIElement>();
 
         public MainWindow()
         {
@@ -283,16 +284,35 @@ namespace Mini_Paint
                 BlurRadius = 50
             };
             Canvas.SetZIndex((UIElement)sender, 1);
+
+            SelectedObjects.Add((UIElement)sender);
+            if (SelectedObjects.Count > 0)
+            {
+                MyWidthTextBox.IsEnabled = true;
+                MyHeightTextBox.IsEnabled = true;
+                MyColorComboBox.IsEnabled = true;
+                MySlider.IsEnabled = true;
+                MyDeleteButton.IsEnabled = true;
+                MyRandomButton.IsEnabled = true;
+            }
             this.DataContext = (UIElement)sender;
-
-
-            MyColorComboBox.IsEnabled = true;
         }
 
         private void DeselectObject(object sender)
         {
             ((UIElement)sender).Effect = null;
             Canvas.SetZIndex((UIElement)sender, 0);
+            SelectedObjects.Remove((UIElement)sender);
+            this.DataContext = SelectedObjects.Count > 0 ? SelectedObjects.Last() : null;
+            if (SelectedObjects.Count <= 0)
+            {
+                MyWidthTextBox.IsEnabled = false;
+                MyHeightTextBox.IsEnabled = false;
+                MyColorComboBox.IsEnabled = false;
+                MySlider.IsEnabled = false;
+                MyDeleteButton.IsEnabled = false;
+                MyRandomButton.IsEnabled = false;
+            }
         }
 
         private void DeselectAllObjects()

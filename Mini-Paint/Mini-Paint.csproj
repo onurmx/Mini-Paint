@@ -71,6 +71,7 @@
     <Compile Include="Converters\AngleConverter.cs" />
     <Compile Include="Converters\BitmapToImageSourceConverter.cs" />
     <Compile Include="Converters\BrushToIndexConverter.cs" />
+    <Compile Include="Converters\SelectionToForegroundConverter.cs" />
     <Compile Include="Converters\SizeConverter.cs" />
     <Compile Include="Localization\Image Localization\ImageLocalizationExtension.cs" />
     <Compile Include="Localization\Image Localization\ImageTranslationSource.cs" />
