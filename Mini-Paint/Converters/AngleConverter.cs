@@ -18,7 +18,7 @@ namespace Mini_Paint
             {
                 return ((RotateTransform)value).Angle.ToString() + "°";
             }
-            return null;
+            return "0°";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

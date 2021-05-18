@@ -52,11 +52,12 @@
             <Setter Property="Width" Value="100"/>
             <Setter Property="Margin" Value="5,0,5,0"/>
             <Setter Property="IsEnabled" Value="False"/>
+            <Setter Property="Minimum" Value="-180"/>
+            <Setter Property="Maximum" Value="180"/>
         </Style>
         <local:AngleConverter x:Key="AC"/>
         <local:SizeConverter x:Key="SC"/>
         <local:BrushToIndexConverter x:Key="BTIC"/>
-        <local:SelectionToForegroundConverter x:Key="STFC"/>
     </Window.Resources>
     <Grid>
         <Grid>
@@ -92,7 +93,7 @@
                         <Label Grid.Column="0" Grid.Row="2" Content="{util:TextLocalization Color}" Style="{StaticResource LabelStyle}"/>
                         <StackPanel Grid.Column="0" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
                             <Label Content="{util:TextLocalization Angle}" Style="{StaticResource LabelStyle}"/>
-                            <Label Content="{Binding RenderTransform, Converter={StaticResource AC}}" Style="{StaticResource LabelStyle}"></Label>
+                            <Label Content="{Binding RenderTransform, Converter={StaticResource AC}, FallbackValue=0°}" Style="{StaticResource LabelStyle}"/>
                         </StackPanel>
                         <TextBox Grid.Column="1"
                                  Grid.Row="0"

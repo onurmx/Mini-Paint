@@ -26,7 +26,7 @@ namespace Mini_Paint
                         Name = prop.Name,
                         RGB = color
                     };
-                }).ToList();
+                }).Where(prop => prop.Name != "Transparent").ToList();
 
                 int index;
                 if ((index = ColorInformations.FindIndex(c => c.RGB == ((SolidColorBrush)value).Color)) != -1)
@@ -49,7 +49,7 @@ namespace Mini_Paint
                     Name = prop.Name,
                     RGB = color
                 };
-            }).ToList();
+            }).Where(prop => prop.Name != "Transparent").ToList();
 
             SolidColorBrush solidColorBrush = new SolidColorBrush();
             solidColorBrush.Color = ColorInformations[(int)value].RGB;

@@ -16,6 +16,7 @@ using System.Windows.Media.Effects;
 using Microsoft.Win32;
 using System.IO;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace Mini_Paint
 {
@@ -46,7 +47,7 @@ namespace Mini_Paint
                     Name = prop.Name,
                     RGB = color
                 };
-            }).ToList();
+            }).Where(prop => prop.Name != "Transparent").ToList();
 
             MyColorComboBoxSetter();
 
@@ -60,7 +61,9 @@ namespace Mini_Paint
                 ComboBoxItem comboBoxItem = new ComboBoxItem();
                 SolidColorBrush solidColorBrush = new SolidColorBrush(ColorInformations[i].RGB);
                 comboBoxItem.Background = solidColorBrush;
-                comboBoxItem.Content = ColorInformations[i].Name;
+                comboBoxItem.Content = Regex.Replace(ColorInformations[i].Name, "([A-Z])", " $1", RegexOptions.Compiled).Trim();
+                comboBoxItem.HorizontalAlignment = HorizontalAlignment.Stretch;
+                comboBoxItem.HorizontalContentAlignment = HorizontalAlignment.Center;
                 MyColorComboBox.Items.Add(comboBoxItem);
             }
         }
