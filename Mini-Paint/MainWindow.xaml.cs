@@ -60,13 +60,18 @@ namespace Mini_Paint
             for (int i = 0; i < ColorInformations.Count; i++)
             {
                 ComboBoxItem comboBoxItem = new ComboBoxItem();
-                SolidColorBrush solidColorBrush = new SolidColorBrush(ColorInformations[i].RGB);
-                comboBoxItem.Background = solidColorBrush;
-                comboBoxItem.Content = Regex.Replace(ColorInformations[i].Name, "([A-Z])", " $1", RegexOptions.Compiled).Trim();
+                comboBoxItem.Background = new SolidColorBrush(ColorInformations[i].RGB);
+                comboBoxItem.Content = Regex.Replace(ColorInformations[i].Name, "([a-z])([A-Z])", "$1 $2");
                 comboBoxItem.HorizontalAlignment = HorizontalAlignment.Stretch;
                 comboBoxItem.HorizontalContentAlignment = HorizontalAlignment.Center;
+                comboBoxItem.Foreground = new SolidColorBrush(SetForeground(ColorInformations[i].RGB));
                 MyColorComboBox.Items.Add(comboBoxItem);
             }
+        }
+
+        private Color SetForeground(Color color)
+        {
+            return 0.2126 * color.R + 0.7152 * color.G + 0.0722 * color.B > 127 ? Colors.Black : Colors.White;
         }
 
         private void RandomShapeCreator(int n)
