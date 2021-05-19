@@ -7,6 +7,7 @@ using System.Windows.Shapes;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Mini_Paint
 {
@@ -39,6 +40,7 @@ namespace Mini_Paint
                 {
                     Rectangle.Height = e.GetPosition(canvas).Y - StartPoint.Y;
                 }
+                Rectangle.RenderTransform = new RotateTransform(0, Rectangle.Width / 2, Rectangle.Height / 2);
             }
             if (DrawingMode == 2)
             {
@@ -60,6 +62,7 @@ namespace Mini_Paint
                 {
                     Ellipse.Height = e.GetPosition(canvas).Y - StartPoint.Y;
                 }
+                Ellipse.RenderTransform = new RotateTransform(0, Ellipse.Width / 2, Ellipse.Height / 2);
             }
         }
     }

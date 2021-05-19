@@ -30,6 +30,7 @@ namespace Mini_Paint
         private int LanguageMode = 1; // 1-ENGLISH, 2-POLISH
         private List<ColorInfo> ColorInformations = new List<ColorInfo>();
         private List<UIElement> SelectedObjects = new List<UIElement>();
+        private MoveObject MoveObject = new MoveObject();
 
         public MainWindow()
         {
@@ -50,7 +51,7 @@ namespace Mini_Paint
             }).Where(prop => prop.Name != "Transparent").ToList();
 
             MyColorComboBoxSetter();
-
+            Canvas.SetZIndex(MyMenuGrid, 5);
             RandomShapeCreator(4);
         }
 
@@ -219,7 +220,7 @@ namespace Mini_Paint
 
         private void MyCanvasLeftDown(object sender, MouseButtonEventArgs e)
         {
-            if (ManualDraw.DrawingMode == 1)
+            if (ManualDraw.DrawingMode == 1 && MoveObject.isEnabled == false)
             {
                 ColorInfo RandomColorInfo = ColorInformations[Random.Next(0, ColorInformations.Count - 1)];
                 ManualDraw.StartPoint = e.GetPosition(MyCanvas);
@@ -233,7 +234,7 @@ namespace Mini_Paint
                 ManualDraw.Rectangle.Cursor = null;
                 Mouse.Capture(MyCanvas);
             }
-            if (ManualDraw.DrawingMode == 2)
+            if (ManualDraw.DrawingMode == 2 && MoveObject.isEnabled == false)
             {
                 ColorInfo RandomColorInfo = ColorInformations[Random.Next(0, ColorInformations.Count - 1)];
                 ManualDraw.StartPoint = e.GetPosition(MyCanvas);
@@ -247,7 +248,7 @@ namespace Mini_Paint
                 ManualDraw.Ellipse.Cursor = null;
                 Mouse.Capture(MyCanvas);
             }
-            if (ManualDraw.DrawingMode == 3)
+            if (ManualDraw.DrawingMode == 3 && MoveObject.isEnabled == false)
             {
                 foreach (UIElement o in MyCanvas.Children)
                 {
@@ -258,22 +259,37 @@ namespace Mini_Paint
                 }
                 DeselectAllObjects();
             }
+            if (ManualDraw.DrawingMode == 3 && MoveObject.isEnabled == true)
+            {
+                MoveObject.StartPoint = e.GetPosition(MyCanvas);
+                MoveObject.SelectedObjects = SelectedObjects;
+                MoveObject.AssignInitialPosition();
+                MyCanvas.Cursor = Cursors.ScrollAll;
+                Mouse.Capture(MyCanvas);
+            }
         }
 
         private void MyCanvasMouseMove(object sender, MouseEventArgs e)
         {
             ManualDraw.MouseMove(MyCanvas, e);
+            MoveObject.MouseMove(MyCanvas, e);
         }
 
         private void MyCanvasLeftUp(object sender, MouseButtonEventArgs e)
         {
-            if (ManualDraw.DrawingMode != 3)
+            if ((ManualDraw.DrawingMode == 1 || ManualDraw.DrawingMode == 2) && MoveObject.isEnabled == false)
             {
                 ManualDraw.Rectangle.Cursor = Cursors.Hand;
                 ManualDraw.Ellipse.Cursor = Cursors.Hand;
                 ManualDraw = new ManualDraw();
                 MyCanvas.Cursor = Cursors.Arrow;
                 Mouse.Capture(null);
+            }
+            if (ManualDraw.DrawingMode == 3 && MoveObject.isEnabled == true)
+            {
+                MoveObject = new MoveObject();
+                Mouse.Capture(null);
+                MyCanvas.Cursor = Cursors.Arrow;
             }
         }
 
@@ -297,6 +313,7 @@ namespace Mini_Paint
                 MySlider.IsEnabled = true;
                 MyDeleteButton.IsEnabled = true;
                 MyRandomButton.IsEnabled = true;
+                MoveObject.isEnabled = true;
             }
             this.DataContext = (UIElement)sender;
         }
@@ -315,6 +332,7 @@ namespace Mini_Paint
                 MySlider.IsEnabled = false;
                 MyDeleteButton.IsEnabled = false;
                 MyRandomButton.IsEnabled = false;
+                MoveObject.isEnabled = false;
             }
         }
 
