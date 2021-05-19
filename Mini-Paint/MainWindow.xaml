@@ -58,6 +58,7 @@
         <local:AngleConverter x:Key="AC"/>
         <local:SizeConverter x:Key="SC"/>
         <local:BrushToIndexConverter x:Key="BTIC"/>
+        <local:SliderToAngleConverter x:Key="STAC"/>
     </Window.Resources>
     <Grid>
         <Grid>
@@ -92,8 +93,10 @@
                         <Label Grid.Column="0" Grid.Row="1" Content="{util:TextLocalization Height}" Style="{StaticResource LabelStyle}"/>
                         <Label Grid.Column="0" Grid.Row="2" Content="{util:TextLocalization Color}" Style="{StaticResource LabelStyle}"/>
                         <StackPanel Grid.Column="0" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Label Content="{util:TextLocalization Angle}" Style="{StaticResource LabelStyle}"/>
-                            <Label Content="{Binding RenderTransform, Converter={StaticResource AC}, FallbackValue=0°}" Style="{StaticResource LabelStyle}"/>
+                            <Label Content="{util:TextLocalization Angle}"
+                                   Style="{StaticResource LabelStyle}"/>
+                            <Label Content="{Binding ElementName=MySlider, Path=Value ,Converter={StaticResource AC}}"
+                                   Style="{StaticResource LabelStyle}"/>
                         </StackPanel>
                         <TextBox Grid.Column="1"
                                  Grid.Row="0"
@@ -113,6 +116,7 @@
                         <Slider Grid.Column="1"
                                 Grid.Row="3"
                                 x:Name="MySlider"
+                                Value="{Binding RenderTransform.Angle, Converter={StaticResource STAC}, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource SliderStyle}"/>
                     </Grid>
                     <Rectangle Style="{StaticResource SeperatorRectangleStyle}"/>

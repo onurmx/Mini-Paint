@@ -6,24 +6,28 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Globalization;
 using System.Windows.Media;
-using System.Windows;
 
 namespace Mini_Paint
 {
-    public class AngleConverter : IValueConverter
+    public class SliderToAngleConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value != null)
             {
-                return ((int)(Math.Floor((double)value))).ToString() + "°";
+                return (double)value;
             }
-            return "0°";
+
+            return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            if (value != null)
+            {
+                return value;
+            }
+            return null;
         }
     }
 }

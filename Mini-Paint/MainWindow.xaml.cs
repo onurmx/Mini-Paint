@@ -105,7 +105,7 @@ namespace Mini_Paint
         {
             Ellipse ellipse = new Ellipse();
             SolidColorBrush solidColorBrush = new SolidColorBrush();
-            RotateTransform rotateTransform = new RotateTransform();
+            RotateTransform rotateTransform = new RotateTransform(0, width / 2, height / 2);
             solidColorBrush.Color = Color.FromArgb(255, red, green, blue);
 
             ellipse.Fill = solidColorBrush;
@@ -131,7 +131,7 @@ namespace Mini_Paint
                 Height = height
             };
             SolidColorBrush solidColorBrush = new SolidColorBrush();
-            RotateTransform rotateTransform = new RotateTransform();
+            RotateTransform rotateTransform = new RotateTransform(0, width / 2, height / 2);
             solidColorBrush.Color = Color.FromArgb(255, red, green, blue);
 
             rectangle.Fill = solidColorBrush;
