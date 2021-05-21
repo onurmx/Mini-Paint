@@ -192,16 +192,16 @@ namespace Mini_Paint
 
         private void RandomColorsButtonClick(object sender, RoutedEventArgs e)
         {
-            SolidColorBrush solidColorBrush;
+            ColorInfo RandomColorInfo;
             foreach (var o in MyCanvas.Children)
             {
+                RandomColorInfo = ColorInformations[Random.Next(0, ColorInformations.Count - 1)];
                 if (((UIElement)o).Effect != null)
                 {
-                    solidColorBrush = new SolidColorBrush(Color.FromArgb(255,
-                                                                             (byte)Random.Next(0, 255),
-                                                                             (byte)Random.Next(0, 255),
-                                                                             (byte)Random.Next(0, 255)));
-                    ((Shape)o).Fill = solidColorBrush;
+                    ((Shape)o).Fill = new SolidColorBrush(Color.FromArgb(255,
+                                                                             RandomColorInfo.RGB.R,
+                                                                             RandomColorInfo.RGB.G,
+                                                                             RandomColorInfo.RGB.B));
                 }
             }
         }
