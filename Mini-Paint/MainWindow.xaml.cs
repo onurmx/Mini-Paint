@@ -187,6 +187,18 @@ namespace Mini_Paint
             foreach (var o in DeleteList)
             {
                 MyCanvas.Children.Remove(o);
+                SelectedObjects.Remove(o);
+            }
+            this.DataContext = SelectedObjects.Count > 0 ? SelectedObjects.Last() : null;
+            if (SelectedObjects.Count <= 0)
+            {
+                MyWidthTextBox.IsEnabled = false;
+                MyHeightTextBox.IsEnabled = false;
+                MyColorComboBox.IsEnabled = false;
+                MySlider.IsEnabled = false;
+                MyDeleteButton.IsEnabled = false;
+                MyRandomButton.IsEnabled = false;
+                MoveObject.isEnabled = false;
             }
         }
 
